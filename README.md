@@ -84,3 +84,23 @@ commands:
 To enable the `/gpt` slash command inside Antigravity:
 1. Copy `skills/gpt/SKILL.md` to `~/.gemini/config/skills/gpt/SKILL.md`.
 2. Any request prefixed with `/gpt` will automatically leverage the bridge.
+
+---
+
+## 💖 Support & Sponsor
+
+If this project helps accelerate your AI engineering workflows, consider supporting its active maintenance and development:
+
+<p align="center">
+  <img src="docs/donate_qr.png" alt="Donate with UPI / GPay" width="280" />
+</p>
+
+* **Name**: Divyansh Prajapati
+* **UPI ID**: `surajdivyansh104-1@oksbi`
+* **Supported Apps**: Google Pay, PhonePe, Paytm, BHIM, and all UPI applications.
+
+---
+
+## License
+
+Created by **Divyansh Prajapati**. Licensed under the [MIT License](LICENSE).
