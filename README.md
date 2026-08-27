@@ -87,17 +87,27 @@ To enable the `/gpt` slash command inside Antigravity:
 
 ---
 
-## 💖 Support & Sponsor
+## Sponsor & Support
 
-If this project helps accelerate your AI engineering workflows, consider supporting its active maintenance and development:
+If this project helps streamline your AI development workflows, you can support ongoing maintenance:
+
+<details>
+<summary><b>💖 Sponsor via UPI / Google Pay (Click to expand)</b></summary>
+<br>
+
+| Field | Details |
+| :--- | :--- |
+| **Recipient** | Divyansh Prajapati |
+| **UPI ID** | `surajdivyansh104-1@oksbi` |
+| **Supported Apps** | Google Pay, PhonePe, Paytm, BHIM, Navi, Any UPI App |
+
+<br>
 
 <p align="center">
-  <img src="docs/donate_qr.png" alt="Donate with UPI / GPay" width="280" />
+  <img src="docs/donate_qr.png" alt="UPI QR Code" width="180" />
 </p>
 
-* **Name**: Divyansh Prajapati
-* **UPI ID**: `surajdivyansh104-1@oksbi`
-* **Supported Apps**: Google Pay, PhonePe, Paytm, BHIM, and all UPI applications.
+</details>
 
 ---
 
