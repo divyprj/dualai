@@ -1,0 +1,28 @@
+# DualAI Production .gitignore
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.venv/
+venv/
+env/
+.env
+*.pem
+*.key
+credentials.json
+
+# Local profiles & state
+browser_profile/
+data/
+logs/
+history/
+*.tmp
+*.log
+
+# OS artifacts
+.DS_Store
+Thumbs.db

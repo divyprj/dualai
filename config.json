@@ -1,0 +1,7 @@
+{
+  "chatgpt_url": "https://chatgpt.com/",
+  "headless": false,
+  "poll_interval_seconds": 1.5,
+  "timeout_seconds": 180,
+  "browser_path": null
+}
