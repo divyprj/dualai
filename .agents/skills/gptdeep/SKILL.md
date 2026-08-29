@@ -37,7 +37,7 @@ When the user invokes `/gptdeep` or asks for ChatGPT consultation in **Thinking 
    * Maintain the same authenticated session at `https://chatgpt.com/c/6a8ff4bb-926c-83ee-8515-22f7f6e40857`.
 
 5. **Structured Output Pipeline**:
-   * Extracted deep reasoning reports are written directly to `C:\Dev\dual-ai\bridge\report.md`.
+   * Extracted deep reasoning reports are written directly to `C:\Dev\gemini-gpt-bridge\bridge\report.md`.
    * **The agent must output this report in its 100% complete, verbatim entirety to the user.**
 
 ---
@@ -45,14 +45,11 @@ When the user invokes `/gptdeep` or asks for ChatGPT consultation in **Thinking 
 ## 🛠️ Step-by-Step Execution Workflow
 
 1. **Construct Deep Reasoning Prompt**:
-   * Write prompt to `C:\Dev\dual-ai\bridge\prompt.md`.
+   * Wrap the user's prompt with deep reasoning constraints and context.
 2. **Execute via Playwright Bridge**:
-   * Run:
-     ```powershell
-     python -c "from dualai.client import DualAIClient; client = DualAIClient(); client.query('''<prompt>''', deep_mode=True)"
-     ```
+   * Use `ask_gpt_question.py` in `C:\Dev\gemini-gpt-bridge\` with extended timeout.
 3. **Capture & Output Complete Text**:
-   * Read response from `C:\Dev\dual-ai\bridge\report.md`.
+   * Read response from `bridge\report.md`.
    * **Display the entire, untruncated response directly to the user.**
 4. **Implement Recommendations**:
    * Apply code modifications, run tests, and report back.

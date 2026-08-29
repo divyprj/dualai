@@ -1,2 +1,3 @@
-# Dual-AI Bridge Prompt Buffer
-Waiting for query...
+# Dual-AI Prompt Buffer
+
+Enter your prompt for ChatGPT here.

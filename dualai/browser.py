@@ -112,6 +112,45 @@ class ChatGPTBrowser:
                 self._dismiss_popups(page)
                 textarea.wait_for(state="attached", timeout=15000)
 
+            # Check for attachments
+            bridge_dir = self.base_dir / "bridge"
+            attachments_file = bridge_dir / "attachments.json"
+            attachment_files = []
+            if attachments_file.exists():
+                try:
+                    import json
+                    with open(attachments_file, "r", encoding="utf-8") as af:
+                        attachment_files = json.load(af)
+                except Exception as e:
+                    Logger.warn(f"Error reading attachments.json: {e}")
+
+            single_attachment = bridge_dir / "attachment.png"
+            if not attachment_files and single_attachment.exists():
+                attachment_files = [str(single_attachment)]
+
+            if attachment_files:
+                valid_files = [f for f in attachment_files if os.path.exists(f)]
+                if valid_files:
+                    Logger.info(f"📎 Attaching {len(valid_files)} reference file(s) to ChatGPT...")
+                    try:
+                        file_input = page.locator("input[type='file']").first
+                        file_input.set_input_files(valid_files)
+                        Logger.info("⏳ Waiting for file upload processing in ChatGPT...")
+                        time.sleep(3)
+                        # Immediately delete attachment definitions to prevent future prompt pollution
+                        if attachments_file.exists():
+                            try:
+                                os.remove(attachments_file)
+                            except Exception:
+                                pass
+                        if single_attachment.exists():
+                            try:
+                                os.remove(single_attachment)
+                            except Exception:
+                                pass
+                    except Exception as e:
+                        Logger.warn(f"File upload warning: {e}")
+
             textarea.click(force=True)
             time.sleep(0.5)
 
@@ -124,8 +163,16 @@ class ChatGPTBrowser:
 
             time.sleep(1)
 
-            # Trigger Send
+            # Count assistant turns before sending to detect NEW response
+            initial_assistant_turns = page.locator("[data-message-author-role='assistant']").count()
+
+            # Trigger Send (wait up to 20s if file still uploading)
             send_btn = page.locator("button[data-testid='send-button'], button[aria-label*='Send']").first
+            for _ in range(20):
+                if send_btn.is_visible() and send_btn.is_enabled():
+                    break
+                time.sleep(1)
+
             if send_btn.is_visible() and send_btn.is_enabled():
                 send_btn.click()
             else:
@@ -134,11 +181,13 @@ class ChatGPTBrowser:
             Logger.info("Prompt dispatched! Awaiting synthesis...")
 
             # Wait for generation to start
-            time.sleep(3)
+            time.sleep(2)
             stop_btn_selector = "button[data-testid='stop-button'], button[aria-label*='Stop']"
 
-            for _ in range(15):
-                if page.locator(stop_btn_selector).is_visible():
+            for _ in range(20):
+                has_stop = page.locator(stop_btn_selector).is_visible()
+                turns_now = page.locator("[data-message-author-role='assistant']").count()
+                if has_stop or turns_now > initial_assistant_turns:
                     Logger.info("ChatGPT is actively generating response...")
                     break
                 time.sleep(1)
@@ -159,28 +208,56 @@ class ChatGPTBrowser:
             # Extract 100% complete verbatim response
             result_text = None
 
-            # Strategy 1: Native Copy Button (guarantees pure, complete markdown)
+            # Strategy 1: DOM message extraction (direct .markdown text)
             try:
-                copy_btns = page.locator("button[aria-label*='Copy'], button[data-testid*='copy']").all()
-                if copy_btns:
-                    copy_btns[-1].click(force=True)
-                    time.sleep(0.8)
-                    clipboard_text = page.evaluate("navigator.clipboard.readText()")
-                    if clipboard_text and len(clipboard_text.strip()) > 20:
-                        result_text = clipboard_text.strip()
-                        Logger.info("Extracted complete markdown via native clipboard copy.")
+                extract_script = """() => {
+                    const turns = document.querySelectorAll('[data-message-author-role="assistant"]');
+                    if (turns.length > 0) {
+                        const last = turns[turns.length - 1];
+                        const md = last.querySelector('.markdown') || last;
+                        const text = (md.innerText || md.textContent || "").trim();
+                        if (text) return text;
+                    }
+                    const articles = document.querySelectorAll('article');
+                    if (articles.length > 0) {
+                        const lastArt = articles[articles.length - 1];
+                        const text = (lastArt.innerText || lastArt.textContent || "").trim();
+                        if (text) return text;
+                    }
+                    return null;
+                }"""
+                result_text = page.evaluate(extract_script)
             except Exception as e:
-                Logger.warn(f"Clipboard extraction fallback: {e}")
+                Logger.warn(f"DOM extraction fallback: {e}")
 
-            # Strategy 2: DOM message extraction fallback
+            # Strategy 2: Native Copy Button (guarantees pure, complete markdown)
             if not result_text:
                 try:
-                    msgs = page.locator("div[data-message-author-role='assistant']").all()
-                    if msgs:
-                        result_text = msgs[-1].inner_text().strip()
-                        Logger.info("Extracted response via assistant DOM element.")
+                    copy_btns = page.locator("button[aria-label*='Copy'], button[data-testid*='copy']").all()
+                    if copy_btns:
+                        copy_btns[-1].click(force=True)
+                        time.sleep(0.8)
+                        clipboard_text = page.evaluate("navigator.clipboard.readText()")
+                        if clipboard_text and len(clipboard_text.strip()) > 20:
+                            result_text = clipboard_text.strip()
+                            Logger.info("Extracted complete markdown via native clipboard copy.")
                 except Exception as e:
-                    Logger.error(f"DOM extraction error: {e}")
+                    Logger.warn(f"Clipboard extraction fallback: {e}")
+
+            # Strategy 3: Check for Generated Image (DALL-E / GPT Images)
+            try:
+                images = page.locator("[data-message-author-role='assistant'] img, article img, img[alt*='Generated image']").all()
+                if images:
+                    img_elem = images[-1]
+                    img_src = img_elem.get_attribute("src")
+                    if img_src and (img_src.startswith("http") or img_src.startswith("blob:")):
+                        import urllib.request
+                        img_path = bridge_dir / "generated_image.png"
+                        if img_src.startswith("http"):
+                            urllib.request.urlretrieve(img_src, str(img_path))
+                            Logger.success(f"Saved raw generated image binary to {img_path} ({img_path.stat().st_size} bytes)!")
+            except Exception as e:
+                Logger.warn(f"Image extraction notice: {e}")
 
             context.close()
 

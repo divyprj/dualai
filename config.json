@@ -1,13 +1,13 @@
 {
-  "project_name": "dual-ai",
-  "version": "2.0.0",
-  "chatgpt_url": "https://chatgpt.com/c/6a8ff4bb-926c-83ee-8515-22f7f6e40857",
+  "project_name": "gemini-gpt-bridge",
+  "version": "1.1.0",
+  "automation_mode": "browser",
   "headless_browser": false,
   "browser_profile_dir": "browser_profile",
   "bridge_directory": "bridge",
   "history_directory": "history",
+  "auto_clipboard_sync": true,
+  "notification_sound": true,
   "poll_interval_seconds": 1.5,
-  "verbatim_output": true,
-  "deep_thinking_timeout": 300,
-  "standard_timeout": 120
+  "active_thread_url": "https://chatgpt.com/c/6a9345aa-9174-83e9-a64e-4a5b5db0c999"
 }

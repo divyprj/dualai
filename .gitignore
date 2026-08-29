@@ -18,7 +18,8 @@ ENV/
 *.log
 bridge/*.png
 bridge/*.jpg
-history/temp*
+bridge/attachments.json
+history/
 
 # OS artifacts
 .DS_Store
