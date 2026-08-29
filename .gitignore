@@ -1,28 +1,26 @@
-# DualAI Production .gitignore
+# Security: Never commit browser cookies, login sessions, or credentials
+browser_profile/
+*.session
+*.cookies
+*.pem
+*.key
+
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
-.Python
-build/
-dist/
-*.egg-info/
 .venv/
-venv/
 env/
-.env
-*.pem
-*.key
-credentials.json
+venv/
+ENV/
 
-# Local profiles & state
-browser_profile/
-data/
-logs/
-history/
-*.tmp
+# Logs & temporary files
 *.log
+bridge/*.png
+bridge/*.jpg
+history/temp*
 
 # OS artifacts
 .DS_Store
 Thumbs.db
+desktop.ini

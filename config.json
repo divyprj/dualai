@@ -1,7 +1,13 @@
 {
-  "chatgpt_url": "https://chatgpt.com/",
-  "headless": false,
+  "project_name": "dual-ai",
+  "version": "2.0.0",
+  "chatgpt_url": "https://chatgpt.com/c/6a8ff4bb-926c-83ee-8515-22f7f6e40857",
+  "headless_browser": false,
+  "browser_profile_dir": "browser_profile",
+  "bridge_directory": "bridge",
+  "history_directory": "history",
   "poll_interval_seconds": 1.5,
-  "timeout_seconds": 180,
-  "browser_path": null
+  "verbatim_output": true,
+  "deep_thinking_timeout": 300,
+  "standard_timeout": 120
 }

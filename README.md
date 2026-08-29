@@ -1,93 +1,80 @@
-# Dual-AI Bridge (`dualai`)
+# 🧠 Dual-AI Bridge (Gemini Antigravity x ChatGPT)
 
-An autonomous, zero-overhead inter-process communication bridge linking **Google DeepMind's Gemini (Antigravity)** with **OpenAI's Flagship Model (ChatGPT)**.
+A persistent, bi-directional, sovereign AI coordination bridge between **Google Antigravity** and **ChatGPT**.
 
----
-
-## Architectural Overview
-
-```
- ┌────────────────────────┐
- │  Antigravity (Gemini)  │  <-- Reasoning & Primary Code Execution
- └───────────┬────────────┘
-             │  /gpt (File-based IPC or CLI)
-             ▼
- ┌────────────────────────┐
- │   DualAI Core Engine   │  <-- Thread Manager, DOM Observer, Persistent Context
- └───────────┬────────────┘
-             │  CDP / Playwright Session
-             ▼
- ┌────────────────────────┐
- │      ChatGPT Web       │  <-- Strategic Architecture, Deep Research & DALL-E 3
- └────────────────────────┘
-```
+Designed for deep architectural reasoning, zero-truncation markdown extraction, and autonomous pair-programming.
 
 ---
 
-## Quickstart
+## ✨ Features
 
-### 1. Installation & Environment Setup
-Run the setup command to configure an isolated Python virtual environment and download browser dependencies:
+- **100% Verbatim Fidelity**: Guaranteed zero truncation, zero compression, and full markdown preservation.
+- **Deep Thinking Mode (`/gptdeep`)**: Extended 300s timeout with automatic reasoning directive injection.
+- **Standard Fast Consultation (`/gpt`)**: Fast interactive reasoning queries.
+- **Single-Thread Continuity**: Preserves conversation memory across queries inside the same persistent ChatGPT URL.
+- **Isolated & Lightweight**: No heavy models, weights, or external runtime requirements—pure Playwright automation.
+- **One-Click Control**: Interactive `run.bat` master dashboard.
 
-```bash
-# Windows
-dualai.bat setup
+---
 
-# Linux / macOS
-chmod +x dualai.sh
-./dualai.sh setup
+## 🚀 Quick Start
+
+### 1. Setup & Installation
+Run the 1-click setup script:
+```powershell
+setup.bat
 ```
 
-### 2. Authentication (One-Time)
-Launch an interactive session to authenticate your account. Profile cookies and session state are persisted securely in `browser_profile/`:
-
-```bash
-# Windows
-dualai.bat auth
-
-# Linux / macOS
-./dualai.sh auth
+### 2. Interactive Dashboard
+Launch the control dashboard:
+```powershell
+run.bat
 ```
 
-### 3. Running the Synchronization Daemon
-Start the background file-watching daemon:
+### 3. Python API Usage
+```python
+from dualai.client import DualAIClient
 
-```bash
-# Windows
-dualai.bat daemon
+client = DualAIClient()
 
-# Linux / macOS
-./dualai.sh daemon
+# Standard Query
+success, response = client.query("Explain distributed consensus in 3 paragraphs")
+
+# Deep Thinking Mode Query
+success, deep_response = client.query("Design an atomic transactional lock engine", deep_mode=True)
+print(deep_response)
 ```
 
 ---
 
-## CLI Reference
+## 📁 Repository Structure
 
-```
-usage: dualai [-h] {setup,auth,daemon,query,doctor} ...
-
-Dual-AI Bridge Infrastructure CLI
-
-commands:
-  setup       Install dependencies and Playwright browser binaries
-  auth        Launch interactive browser session for one-time authentication
-  daemon      Run background synchronization daemon
-  query       Execute single-shot prompt directly from the terminal
-  doctor      Inspect system health and configuration
+```text
+c:\Dev\dual-ai\
+├── .agents\skills\
+│   ├── gpt\SKILL.md          # /gpt skill definition
+│   └── gptdeep\SKILL.md      # /gptdeep skill definition
+├── bridge\
+│   ├── prompt.md             # Input query buffer
+│   └── report.md             # Output verbatim report buffer
+├── browser_profile\          # Persistent browser session
+├── dualai\
+│   ├── browser.py            # Playwright driver
+│   ├── client.py             # High-level query API
+│   ├── config.py             # Settings loader
+│   ├── watcher.py            # Background file watcher
+│   └── utils\                # Logger and text cleaner
+├── tests\                    # Integrity test suite
+├── ARCHITECTURE.md           # Deep system design
+├── BRIDGE_PROTOCOL.md        # File IPC protocol
+├── RULES.md                  # Non-negotiable operating rules
+├── config.json               # System configuration
+└── run.bat                   # Interactive dashboard
 ```
 
 ---
 
-## Antigravity Slash Skill Integration
-
-To enable the `/gpt` slash command inside Antigravity:
-1. Copy `skills/gpt/SKILL.md` to `~/.gemini/config/skills/gpt/SKILL.md`.
-2. Any request prefixed with `/gpt` will automatically leverage the bridge.
-
----
-
-## Sponsor & Support
+## 💖 Sponsor & Support
 
 If this project helps streamline your AI development workflows, you can support ongoing maintenance:
 
@@ -111,6 +98,5 @@ If this project helps streamline your AI development workflows, you can support 
 
 ---
 
-## License
-
-Created by **Divyansh Prajapati**. Licensed under the [MIT License](LICENSE).
+## 📜 License
+Created by **Divyansh Prajapati (~DIV)**. Licensed under the [MIT License](LICENSE).

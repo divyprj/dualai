@@ -1,2 +1,2 @@
-# Standby
-ChatGPT responses will sync here.
+# Dual-AI Bridge Verbatim Report Buffer
+System ready.
